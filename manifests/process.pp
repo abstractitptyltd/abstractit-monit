@@ -18,7 +18,7 @@ define monit::process (
   $type = '',
   $host_tests = '3',
   $host_cycles = '3',
-  $host_action = 'restart',
+  $host_action = 'timeout',
   $template = 'monit/process.erb',
 ) {
 
