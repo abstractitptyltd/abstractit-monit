@@ -49,7 +49,7 @@
 # will use the second mail server in the list and so on. By default Monit uses 
 # port 25 - it is possible to override this with the PORT option.
 #
-set mailserver mail.pivit.net.au,               # primary mailserver
+set mailserver <%= @mailserver %>,               # primary mailserver
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
@@ -99,14 +99,16 @@ set mailserver mail.pivit.net.au,               # primary mailserver
 ## or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
 ## are expanded at runtime. For example, to override the sender, use:
 #
-set mail-format { from: monit@pivit.net.au }
+set mail-format { from: <%= @from_email %> }
 #
 #
 ## You can set alert recipients whom will receive alerts if/when a 
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
 #
-set alert engineering@pivit.net.au                       # receive all alerts
+<% if @alert_email != '' -%>
+set alert <%= @alert_email %>              # receive all alerts
+<% end -%>
 # set alert manager@foo.bar only on { timeout }  # receive just service-
 #                                                # timeout alert
 #
@@ -130,6 +132,7 @@ set httpd port 2812 and
 ## usage. Each test specifies a resource, conditions and the action to be
 ## performed should a test fail.
 #
+<% if check_local -%>
   check system <%= @fqdn %>
     if loadavg (1min) > 20 then alert
     if loadavg (5min) > 10 then alert
@@ -138,10 +141,13 @@ set httpd port 2812 and
     if cpu usage (user) > 90% then alert
     if cpu usage (system) > 80% then alert
     if cpu usage (wait) > 70% then alert
+<% end -%>
 
+<% if @check_disk -%>
 check device root with path /
   if space usage > 80% for 5 times within 15 cycles then alert
   if inodes > 80% for 5 times within 15 cycles then alert
+<% end -%>
 
 #
 #    
