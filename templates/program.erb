@@ -1,0 +1,10 @@
+check program <%= @real_program %> with path <%= @path %>
+  start program = "<%= @real_start %>"
+  stop  program = "<%= @real_stop %>"
+<% if @status != '' -%>
+  if status <%= @status %> for <%= @status_tests %> times within <%= @status_cycles %> cycles then <%= @status_action %>
+<% end -%>
+<% if @host != '' -%>
+  if failed host <%= @host %> port <%= @port %><% if @protocol != '' %> protocol <%= @protocol %> <% end %><% if @type != '' %> type <%= @type %> <% end %> for <%= @host_tests %> times within <%= @host_cycles %> cycles then <%= @host_action %>
+<% end -%>
+  if <%= @restarts %> restarts within <%= @cycles %> cycles then <%= @restart_action %>
