@@ -10,7 +10,7 @@ define monit::process (
   $stop = '',
   $restarts = '5',
   $cycles = '5',
-  $restart_action = 'restart',
+  $restart_action = 'timeout',
   $pidfile = '',
   $host = '',
   $port = '',
@@ -18,7 +18,7 @@ define monit::process (
   $type = '',
   $host_tests = '3',
   $host_cycles = '3',
-  $host_action = 'timeout',
+  $host_action = 'restart',
   $template = 'monit/process.erb',
 ) {
 
@@ -28,14 +28,14 @@ define monit::process (
   }
   $real_pidfile = $pidfile ? {
     ''      => "/var/run/${name}.pid",
-    default => $process,
+    default => $pidfile,
   }
   $real_start = $start ? {
-    ''      => "service ${real_process} start",
+    ''      => "/usr/sbin/service ${real_process} start",
     default => $start,
   }
   $real_stop = $stop ? {
-    ''      => "service ${real_process} stop",
+    ''      => "/usr/sbin/service ${real_process} stop",
     default => $stop,
   }
 
