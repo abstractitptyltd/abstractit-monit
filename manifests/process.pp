@@ -6,6 +6,7 @@
 #
 define monit::process (
   $process = '',
+  $service = '',
   $start = '',
   $stop = '',
   $restarts = '5',
@@ -26,16 +27,20 @@ define monit::process (
     ''      => $name,
     default => $process,
   }
+  $real_service = $service ? {
+    ''      => $name,
+    default => $service ,
+  }
   $real_pidfile = $pidfile ? {
     ''      => "/var/run/${name}.pid",
     default => $pidfile,
   }
   $real_start = $start ? {
-    ''      => "/usr/sbin/service ${real_process} start",
+    ''      => "/usr/sbin/service ${real_service} start",
     default => $start,
   }
   $real_stop = $stop ? {
-    ''      => "/usr/sbin/service ${real_process} stop",
+    ''      => "/usr/sbin/service ${real_service} stop",
     default => $stop,
   }
 
