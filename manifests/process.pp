@@ -50,7 +50,7 @@ define monit::process (
     group   => 'root',
     mode    => '0644',
     content => template($template),
-    notify  => Class['monit::process'],
+    notify  => Class['monit::service'],
   }
 
 }
