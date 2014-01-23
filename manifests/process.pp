@@ -5,6 +5,7 @@
 # Sample Usage:
 #
 define monit::process (
+  $ensure = present,
   $process = '',
   $service = '',
   $start = '',
@@ -22,6 +23,15 @@ define monit::process (
   $host_action = 'restart',
   $template = 'monit/process.erb',
 ) {
+
+  include monit
+
+  $real_ensure = $ensure ? {
+    default  => file,
+    true     => file,
+    'absent' => 'absent',
+    false    => 'absent',
+  }
 
   $real_process = $process ? {
     ''      => $name,
@@ -45,7 +55,7 @@ define monit::process (
   }
 
   file { "/etc/monit/conf.d/${name}.monitrc":
-    ensure  => file,
+    ensure  => $real_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
