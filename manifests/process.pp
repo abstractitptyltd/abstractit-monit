@@ -24,8 +24,6 @@ define monit::process (
   $template = 'monit/process.erb',
 ) {
 
-  include monit
-
   $real_ensure = $ensure ? {
     default  => file,
     true     => file,
@@ -61,6 +59,7 @@ define monit::process (
     mode    => '0644',
     content => template($template),
     notify  => Class['monit::service'],
+    require => Class['monit::install'],
   }
 
 }

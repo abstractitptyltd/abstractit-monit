@@ -45,7 +45,8 @@ define monit::program (
     group   => 'root',
     mode    => '0644',
     content => template($template),
-    notify  => Service['monit'],
+    notify  => Class['monit::service'],
+    require => Class['monit::install'],
   }
 
 }
