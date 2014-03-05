@@ -18,13 +18,4 @@ class monit::config (
     mode    => '0600',
   }
 
-  file { 'monit.cfg':
-    ensure => file,
-    path   => '/usr/local/backups/monit.cfg',
-    source => 'puppet:///modules/monit/monit.cfg',
-    mode   => '0600',
-    owner  => 'root',
-    group  => 'root',
-  }
-
 }
