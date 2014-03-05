@@ -132,12 +132,14 @@ set httpd port 2812 and
 ## usage. Each test specifies a resource, conditions and the action to be
 ## performed should a test fail.
 #
-<% if check_local -%>
+<% if @check_local -%>
   check system <%= @fqdn %>
     if loadavg (1min) > 20 then alert
     if loadavg (5min) > 10 then alert
     if memory usage > 75% then alert
+  <%- if operatingsystem == 'ubuntu' -%>
     if swap usage > 25% then alert
+  <%- end -%>
     if cpu usage (user) > 90% then alert
     if cpu usage (system) > 80% then alert
     if cpu usage (wait) > 70% then alert
