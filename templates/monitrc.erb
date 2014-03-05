@@ -137,7 +137,7 @@ set httpd port 2812 and
     if loadavg (1min) > 20 then alert
     if loadavg (5min) > 10 then alert
     if memory usage > 75% then alert
-  <%- if operatingsystem == 'ubuntu' -%>
+  <%- if @operatingsystem == 'Ubuntu' -%>
     if swap usage > 25% then alert
   <%- end -%>
     if cpu usage (user) > 90% then alert
