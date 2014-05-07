@@ -49,7 +49,9 @@
 # will use the second mail server in the list and so on. By default Monit uses 
 # port 25 - it is possible to override this with the PORT option.
 #
+<% if @mailserver != '' -%>
 set mailserver <%= @mailserver %>,               # primary mailserver
+<% end -%>
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
@@ -99,7 +101,9 @@ set mailserver <%= @mailserver %>,               # primary mailserver
 ## or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
 ## are expanded at runtime. For example, to override the sender, use:
 #
+<% if @from_email != '' -%>
 set mail-format { from: <%= @from_email %> }
+<% end -%>
 #
 #
 ## You can set alert recipients whom will receive alerts if/when a 

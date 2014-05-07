@@ -26,6 +26,9 @@ define monit::program (
   $template = 'monit/program.erb',
 ) {
 
+  include monit::install
+  include monit::service
+
   $real_program = $program ? {
     ''      => $name,
     default => $program,

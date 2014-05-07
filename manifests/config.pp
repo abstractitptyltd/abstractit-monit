@@ -2,13 +2,15 @@
 #
 # config file for monit
 #
+
 class monit::config (
-  $from_email,
-  $alert_email = '',
-  $mailserver = "mail.${::domain}",
-  $check_local = true,
-  $check_disk = true,
-) {
+  $from_email = $monit::params::from_email,
+  $alert_email = $monit::params::alert_email,
+  $mailserver = $monit::params::mailserver,
+  $check_local = $monit::params::check_local,
+  $check_disk = $monit::params::check_disk,
+) inherits monit::params {
+
   file { 'monitrc':
     ensure  => file,
     path    => '/etc/monit/monitrc',

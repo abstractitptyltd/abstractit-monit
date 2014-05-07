@@ -4,6 +4,7 @@
 #
 # Sample Usage:
 #
+
 define monit::process (
   $ensure = present,
   $process = '',
@@ -23,6 +24,9 @@ define monit::process (
   $host_action = 'restart',
   $template = 'monit/process.erb',
 ) {
+
+  include monit::install
+  include monit::service
 
   $real_ensure = $ensure ? {
     default  => file,
