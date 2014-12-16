@@ -1,6 +1,6 @@
 check process <%= @real_process %> with pidfile <%= @real_pidfile %>
 <%- if @groups -%>
-  <%- groups.each do |group| -%>
+  <%- @groups.each do |group| -%>
   group <%= group %>
   <%- end -%>
 <%- end -%>
