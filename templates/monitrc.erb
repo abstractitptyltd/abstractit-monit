@@ -16,25 +16,27 @@
 ##
 ## Start Monit in the background (run as a daemon):
 #
-  set daemon 120            # check services at 2-minute intervals
-#   with start delay 240    # optional: delay the first check by 4-minutes (by 
-#                           # default Monit check immediately after Monit start)
-#
+  set daemon <%= @check_interval %> # check services at 2-minute intervals
+<%- if @start_delay -%>
+   with start delay <%= @start_delay %>
+<%- end -%>
 #
 ## Set syslog logging with the 'daemon' facility. If the FACILITY option is
 ## omitted, Monit will use 'user' facility by default. If you want to log to 
 ## a standalone log file instead, specify the full path to the log file
 #
-# set logfile syslog facility log_daemon                       
-  set logfile /var/log/monit.log
-#
+<%- if @logfacility == 'syslog' -%>
+  set logfile syslog facility log_daemon                       
+<%- else -%>
+  set logfile <%= @log_file %>
+<%- end -%>
+
 #
 ## Set the location of the Monit id file which stores the unique id for the
 ## Monit instance. The id is generated and stored on first Monit start. By 
 ## default the file is placed in $HOME/.monit.id.
 #
-# set idfile /var/.monit.id
-  set idfile /var/lib/monit/id
+  set idfile <%= @id_file %>
 #
 ## Set the location of the Monit state file which saves monitoring states
 ## on each cycle. By default the file is placed in $HOME/.monit.state. If
@@ -42,16 +44,18 @@
 ## the monitoring state across reboots. If it is on temporary filesystem, the
 ## state will be lost on reboot which may be convenient in some situations.
 #
+<%- if @statefile -%>
   set statefile /var/lib/monit/state
+<%- end -%>
 #
 ## Set the list of mail servers for alert delivery. Multiple servers may be 
 ## specified using a comma separator. If the first mail server fails, Monit 
 # will use the second mail server in the list and so on. By default Monit uses 
 # port 25 - it is possible to override this with the PORT option.
 #
-<% if @mailserver != '' -%>
-set mailserver <%= @mailserver %>,               # primary mailserver
-<% end -%>
+<%- if @mailserver != '' -%>
+set mailserver <%= @mailserver %> #,               # primary mailserver
+<%- end -%>
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
@@ -63,9 +67,11 @@ set mailserver <%= @mailserver %>,               # primary mailserver
 ## size using the SLOTS option (if omitted, the queue is limited by space 
 ## available in the back end filesystem).
 #
+<%- if @eventqueue -%>
   set eventqueue
-      basedir /var/lib/monit/events # set the base directory where events will be stored
-      slots 100                     # optionally limit the queue size
+      basedir <%= @events_dir %> # set the base directory where events will be stored
+      slots <%= @event_slots %>  # optionally limit the queue size
+<%- end -%>
 #
 #
 ## Send status and events to M/Monit (for more informations about M/Monit 
@@ -76,6 +82,9 @@ set mailserver <%= @mailserver %>,               # primary mailserver
 ## Though, if safety is a concern we recommend instead using https when
 ## communicating with M/Monit and send credentials encrypted.
 #
+<%- if @mmonit_collector != '' -%>
+ set mmonit <%= @mmonit_collector %>
+<%- end -%>
 # set mmonit http://monit:monit@192.168.1.10:8080/collector
 #     # and register without credentials     # Don't register credentials
 #
@@ -101,18 +110,18 @@ set mailserver <%= @mailserver %>,               # primary mailserver
 ## or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
 ## are expanded at runtime. For example, to override the sender, use:
 #
-<% if @from_email != '' -%>
+<%- if @from_email != '' -%>
 set mail-format { from: <%= @from_email %> }
-<% end -%>
+<%- end -%>
 #
 #
 ## You can set alert recipients whom will receive alerts if/when a 
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
 #
-<% if @alert_email != '' -%>
-set alert <%= @alert_email %>              # receive all alerts
-<% end -%>
+<%- if @alert_email != '' -%>
+set alert <%= @alert_email %> # receive all alerts
+<%- end -%>
 # set alert manager@foo.bar only on { timeout }  # receive just service-
 #                                                # timeout alert
 #
@@ -121,9 +130,17 @@ set alert <%= @alert_email %>              # receive all alerts
 ## services monitored and manage services from a web interface. See the
 ## Monit Wiki if you want to enable SSL for the web server. 
 #
-set httpd port 2812 and
-    use address localhost  # only accept connection from localhost
-    allow localhost        # allow localhost to connect to the server and
+<%- if @status_server -%>
+set httpd port <%= @status_port %> and
+    use address <%= @status_address %>  # only accept connection from localhost
+    <%- @status_allow.each do |allow| -%>
+    allow <%= allow %>
+    <%- end -%>
+<%- end -%>
+
+#set httpd port 2812 and
+#    use address localhost  # only accept connection from localhost
+#    allow localhost        # allow localhost to connect to the server and
 #    allow admin:monit      # require user 'admin' with password 'monit'
 #    allow @monit           # allow users of group 'monit' to connect (rw)
 #    allow @users readonly  # allow users of group 'users' to connect readonly
@@ -136,24 +153,31 @@ set httpd port 2812 and
 ## usage. Each test specifies a resource, conditions and the action to be
 ## performed should a test fail.
 #
-<% if @check_local -%>
+<%- if @check_local -%>
   check system <%= @fqdn %>
-    if loadavg (1min) > 20 then alert
-    if loadavg (5min) > 10 then alert
-    if memory usage > 75% then alert
-  <%- if @operatingsystem == 'Ubuntu' -%>
-    if swap usage > 25% then alert
-  <%- end -%>
-    if cpu usage (user) > 90% then alert
-    if cpu usage (system) > 80% then alert
-    if cpu usage (wait) > 70% then alert
-<% end -%>
+	<%- if @check_load -%>
+		<%- @load_threshold.keys.sort.each do |load_key| -%>
+     if loadavg (<%= load_key %>) > <%= load_threshold[load_key] %> then alert
+		<%- end -%>
+	<%- end -%>
+	<%- if @check_memory -%>
+    if memory usage > <%= @memory_threshold %> then alert
+  	<%- end -%>
+	<%- if @check_swap -%>
+    if swap usage > <%= @swap_threshold %> then alert
+  	<%- end -%>
+  	<%- if @check_cpu -%>
+		<%- @load_threshold.keys.sort.each do |cpu_key| -%>
+    if cpu usage (<%= cpu_key %>) > <%= load_threshold[cpu_key] %> then alert
+		<%- end -%>
+  	<%- end -%>
+<%- end -%>
 
-<% if @check_disk -%>
+<%- if @check_disk -%>
 check device root with path /
-  if space usage > 80% for 5 times within 15 cycles then alert
-  if inodes > 80% for 5 times within 15 cycles then alert
-<% end -%>
+  if space usage > <%= @disk_usage %> for 5 times within 15 cycles then alert
+  if inodes > <%= @disk_usage %> for 5 times within 15 cycles then alert
+<%- end -%>
 
 #
 #    
@@ -261,5 +285,5 @@ check device root with path /
 ## It is possible to include additional configuration parts from other files or
 ## directories.
 #
-   include /etc/monit/conf.d/*
+   include <%= @include_dir %>/*
 #

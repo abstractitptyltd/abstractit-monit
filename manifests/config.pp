@@ -4,15 +4,41 @@
 #
 
 class monit::config (
-  $from_email  = '',
-  $alert_email = '',
-  $mailserver  = '',
-  $check_local = $monit::params::check_local,
-  $check_disk  = $monit::params::check_disk,) inherits monit::params {
-  file { 'monitrc':
+  $check_interval,
+  $start_delay,
+  $from_email,
+  $alert_email,
+  $mailserver,
+  $check_local,
+  $check_load,
+  $load_threshold,
+  $check_cpu,
+  $cpu_threshold,
+  $check_memory,
+  $memory_threshold,
+  $check_swap,
+  $swap_threshold,
+  $check_disk,
+  $disk_usage,
+  $logfacility,
+  $log_file,
+  $include_dir,
+  ) {
+  include monit::params
+
+  include monit
+  $monit_conf_file = $monit::params::monit_conf_file
+
+  file { $monit_conf_file:
     ensure  => file,
-    path    => '/etc/monit/monitrc',
     content => template('monit/monitrc.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0600',
+  }
+
+  file { $include_dir:
+    ensure  => directory,
     owner   => 'root',
     group   => 'root',
     mode    => '0600',

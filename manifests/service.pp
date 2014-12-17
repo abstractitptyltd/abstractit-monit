@@ -4,8 +4,8 @@
 #
 
 class monit::service (
-  $ensure = $monit::params::ensure,
-  $enable = $monit::params::enable,
+  $ensure = 'running',
+  $enable = true,
 ) inherits monit::params {
   service { 'monit':
     ensure => $ensure,

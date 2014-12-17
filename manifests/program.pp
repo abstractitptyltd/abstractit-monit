@@ -26,8 +26,8 @@ define monit::program (
   $template = 'monit/program.erb',
 ) {
 
-  include monit::install
-  include monit::service
+  include monit
+  $include_dir = $monit::include_dir
 
   $real_program = $program ? {
     ''      => $name,
@@ -42,7 +42,7 @@ define monit::program (
     default => $stop,
   }
 
-  file { "/etc/monit/conf.d/${name}.monitrc":
+  file { "${include_dir}/${name}.monitrc":
     ensure  => file,
     owner   => 'root',
     group   => 'root',

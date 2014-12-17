@@ -11,10 +11,10 @@ define monit::file (
   $action = 'alert',
 ) {
 
-  include monit::install
-  include monit::service
+  include monit
+  $include_dir = $monit::include_dir
 
-  file { "/etc/monit/conf.d/${name}.monitrc":
+  file { "${include_dir}/${name}.monitrc":
     ensure  => file,
     owner   => 'root',
     group   => 'root',

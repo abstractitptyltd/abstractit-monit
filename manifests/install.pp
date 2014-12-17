@@ -2,8 +2,10 @@
 #
 # for managing the monit service
 #
-class monit::install {
+class monit::install (
+  $version = installed
+) {
   package { 'monit':
-    ensure => installed,
+    ensure => $version,
   }
 }

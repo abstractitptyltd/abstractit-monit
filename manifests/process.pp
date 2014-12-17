@@ -29,8 +29,8 @@ define monit::process (
   $host_cycles    = '3',
   $host_action    = 'restart',
   $template       = 'monit/process.erb',) {
-  include monit::install
-  include monit::service
+  include monit
+  $include_dir = $monit::include_dir
 
   $real_ensure  = $ensure ? {
     default  => file,
@@ -60,7 +60,7 @@ define monit::process (
     default => $stop,
   }
 
-  file { "/etc/monit/conf.d/${name}.monitrc":
+  file { "${include_dir}/${name}.monitrc":
     ensure  => $real_ensure,
     owner   => 'root',
     group   => 'root',
