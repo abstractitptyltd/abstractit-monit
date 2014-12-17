@@ -1,0 +1,10 @@
+## Set syslog logging with the 'daemon' facility. If the FACILITY option is
+## omitted, Monit will use 'user' facility by default. If you want to log to 
+## a standalone log file instead, specify the full path to the log file
+#
+<%- if @logfacility == 'syslog' -%>
+  set logfile syslog facility log_daemon                       
+<%- else -%>
+  set logfile <%= @log_file %>
+<%- end -%>
+

@@ -44,4 +44,13 @@ class monit::config (
     mode    => '0600',
   }
 
+  file { "${include_dir}/logging":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0600',
+    content => template('monit/logging.erb'),
+    require => File[$include_dir]
+  }
+
 }

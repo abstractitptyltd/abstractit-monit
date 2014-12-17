@@ -77,7 +77,7 @@ class monit (
   $cpu_threshold = { 'user' => '90%', 'system' => '80%', 'wait' => '70%'},
   $check_memory = true,
   $memory_threshold = '75%',
-  $check_swap = true,
+  $check_swap = $monit::params::check_swap,
   $swap_threshold = '25%',
   $check_disk  = true,
   $disk_usage = '80%',

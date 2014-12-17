@@ -7,15 +7,22 @@ class monit::params {
       $log_file = '/var/log/monit.log'
       $id_file = '/var/lib/monit/id'
       $state_file = '/var/lib/monit/state'
-      $include_dir = '/etc/monit/conf.d/'
+      $include_dir = '/etc/monit/conf.d'
       $events_dir = '/var/lib/monit/events'
+      $check_swap = true
     }
     'RedHat': {
       $monit_conf_file = '/etc/monit.conf'
-      $log_file = '/var/log/monit/monit.log'
-      $id_file = '/var/.monit.id'
-      $include_dir = '/etc/monit.d/'
+      $log_file = '/var/log/monit'
+      $include_dir = '/etc/monit.d'
       $events_dir = '/var/monit'
+      if $lsbmajdistrelease == 5 {
+        #CentOS 5 package doesn't have swap support
+        $check_swap = false
+      } else {
+        $id_file = '/var/.monit.id'
+        $check_swap = true
+      }
     }
   }
 }
