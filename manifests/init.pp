@@ -108,11 +108,11 @@ class monit (
     logfacility  => $logfacility,
     log_file => $log_file,
     include_dir => $include_dir
-  } #~>
-#  class { 'monit::service':
-#    ensure => $ensure,
-#    enable => $enable,
-#  } ->
-#  Class['monit']
+  } ~>
+  class { 'monit::service':
+    ensure => $ensure,
+    enable => $enable,
+  } ->
+  Class['monit']
 
 }

@@ -4,7 +4,7 @@
   "author": "Pete Brown",
   "license": "Apache 2.0",
   "summary": "A module for managing monit",
-  "source": "https://github.com/pivitptyltd/abstractit-monit",
+  "source": "https://github.com/PivitPtyLtd/abstractit-monit",
   "project_page": "https://github.com/PivitPtyLtd/puppet-monit",
   "issues_url": "https://github.com/pivitptyltd/puppet-monit/issues",
   "tags": ["monit", "monitoring"],
