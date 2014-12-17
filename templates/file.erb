@@ -1,2 +1,14 @@
-check file <%= @file %> with path <%= @path %>
+check file <%= @real_file %> with path <%= @path %>
+<%- @groups.each do |group| -%>
+  group <%= group %>
+<%- end -%>
+<%- if @timestamp -%>
   if timestamp > <%= @age %> <%= @increment %> then <%= @action %>
+<%- end -%>
+<%- if @service -%>
+  start program = "<%= @real_start %>"
+  stop  program = "<%= @real_stop %>"
+<%- end -%>
+<%- if @restarts && @cycles %% @restart_action -%>
+  if <%= @restarts %> restarts within <%= @cycles %> cycles then <%= @restart_action %>
+<%- end -%>

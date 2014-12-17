@@ -31,6 +31,7 @@ define monit::process (
   $template       = 'monit/process.erb',) {
   include monit
   $include_dir = $monit::include_dir
+  $service_bin = $monit::service_bin
 
   $real_ensure  = $ensure ? {
     default  => file,
@@ -52,15 +53,15 @@ define monit::process (
     default => $pidfile,
   }
   $real_start   = $start ? {
-    ''      => "/usr/sbin/service ${real_service} start",
+    ''      => "${service_bin} ${real_service} start",
     default => $start,
   }
   $real_stop    = $stop ? {
-    ''      => "/usr/sbin/service ${real_service} stop",
+    ''      => "${service_bin} ${real_service} stop",
     default => $stop,
   }
 
-  file { "${include_dir}/${name}.monitrc":
+  file { "${include_dir}/${name}_process.monitrc":
     ensure  => $real_ensure,
     owner   => 'root',
     group   => 'root',

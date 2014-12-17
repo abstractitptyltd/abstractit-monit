@@ -84,6 +84,8 @@ class monit (
   $logfacility = 'file',
   $log_file = $monit::params::log_file,
   $include_dir = $monit::params::include_dir,
+  $service_bin = $monit::params::service_bin,
+  $include_purge = false,
 ) inherits monit::params {
   class { 'monit::install':
     version => $version,
@@ -107,7 +109,8 @@ class monit (
     disk_usage => $disk_usage,
     logfacility  => $logfacility,
     log_file => $log_file,
-    include_dir => $include_dir
+    include_dir => $include_dir,
+    include_purge => $include_purge
   } ~>
   class { 'monit::service':
     ensure => $ensure,

@@ -28,21 +28,22 @@ define monit::program (
 
   include monit
   $include_dir = $monit::include_dir
+  $service_bin = $monit::service_bin
 
   $real_program = $program ? {
     ''      => $name,
     default => $program,
   }
   $real_start = $start ? {
-    ''      => "/usr/sbin/service ${real_program} start",
+    ''      => "${service_bin} ${real_program} start",
     default => $start,
   }
   $real_stop = $stop ? {
-    ''      => "/usr/sbin/service ${real_program} stop",
+    ''      => "${service_bin} ${real_program} stop",
     default => $stop,
   }
 
-  file { "${include_dir}/${name}.monitrc":
+  file { "${include_dir}/${name}_program.monitrc":
     ensure  => file,
     owner   => 'root',
     group   => 'root',

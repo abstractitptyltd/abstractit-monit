@@ -9,6 +9,7 @@ class monit::params {
       $state_file = '/var/lib/monit/state'
       $include_dir = '/etc/monit/conf.d'
       $events_dir = '/var/lib/monit/events'
+      $service_bin = '/usr/sbin/service'
       $check_swap = true
     }
     'RedHat': {
@@ -16,6 +17,7 @@ class monit::params {
       $log_file = '/var/log/monit'
       $include_dir = '/etc/monit.d'
       $events_dir = '/var/monit'
+      $service_bin = '/sbin/service'
       if $lsbmajdistrelease == 5 {
         #CentOS 5 package doesn't have swap support
         $check_swap = false

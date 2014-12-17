@@ -23,6 +23,7 @@ class monit::config (
   $logfacility,
   $log_file,
   $include_dir,
+  $include_purge,
   ) {
   include monit::params
 
@@ -42,6 +43,8 @@ class monit::config (
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
+    purge   => $include_purge,
+    recurse => $include_purge,
   }
 
   file { "${include_dir}/logging":
