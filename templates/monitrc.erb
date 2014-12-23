@@ -101,12 +101,23 @@ set mailserver <%= @mailserver %> #,               # primary mailserver
 ## You can override this message format or parts of it, such as subject
 ## or sender using the MAIL-FORMAT statement. Macros such as $DATE, etc.
 ## are expanded at runtime. For example, to override the sender, use:
-#
+
 <%- if @from_email != '' -%>
 set mail-format { from: <%= @from_email %> }
 <%- end -%>
-#
-#
+
+<%- if @alert_reply_to != '' -%>
+set mail-format { reply-to: <%= @alert_reply_to %> }
+<%- end -%>
+
+<%- if @alert_subject != '' -%>
+set mail-format { subject: <%= @alert_subject %> }
+<%- end -%>
+
+<%- if @alert_body != '' -%>
+set mail-format { message: <%= @alert_body %> }
+<%- end -%>
+
 ## You can set alert recipients whom will receive alerts if/when a 
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
