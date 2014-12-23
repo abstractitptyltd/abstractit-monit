@@ -1,6 +1,6 @@
 {
   "name": "abstractit-monit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Pete Brown",
   "license": "Apache 2.0",
   "summary": "A module for managing monit",
