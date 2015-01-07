@@ -30,6 +30,16 @@ class monit::config (
   include monit
   $monit_conf_file = $monit::params::monit_conf_file
 
+  $alert_ensure = $alert_email ? {
+    ''      => absent,
+    default => present,
+  }
+  
+  monit::alert { 'main':
+    ensure => $alert_ensure,
+    email  => $alert_email,
+  }
+
   file { $monit_conf_file:
     ensure  => file,
     content => template('monit/monitrc.erb'),

@@ -1,0 +1,3 @@
+<%- if @email -%>
+set alert <%= @email %> <% if @condition %><%= @condition %><% end %> <% if @events %>{<%= @events %>}<% end %> <% if @reminder %>reminder <%= @reminder %><% end %>
+<%- end -%>

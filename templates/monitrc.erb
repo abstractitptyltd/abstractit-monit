@@ -122,12 +122,11 @@ set mail-format { message: <%= @alert_body %> }
 ## service defined in this file has errors. Alerts may be restricted on 
 ## events by using a filter as in the second example below. 
 #
-<%- if @alert_email != '' -%>
-set alert <%= @alert_email %> # receive all alerts
-<%- end -%>
+# these are managed by the monit::alert define
+#
+# set alert alerts@foo.bar # receive all alerts
 # set alert manager@foo.bar only on { timeout }  # receive just service-
 #                                                # timeout alert
-#
 #
 ## Monit has an embedded web server which can be used to view status of 
 ## services monitored and manage services from a web interface. See the
