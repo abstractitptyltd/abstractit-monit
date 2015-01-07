@@ -1,3 +1,24 @@
+##2015-01-07 - 0.1.4
+###Summary
+adding define for setting up alerts
+
+####Features
+- add define for setting alerts with all available options
+
+##2014-12-24 - 0.1.3
+###Summary
+adding extra options for setting mail format
+
+####Features
+- add alert_subject, alert_body and alert_reply_to variables for setting other mail-format options
+
+##2014-12-24 - 0.1.2
+###Summary
+adding monit::disks define
+
+####Features
+- add define monit::disks for setting up extra disks to monitor
+
 ##2014-12-16 - 0.1.1
 ###Summary
 Bugfix and improvements
