@@ -23,18 +23,17 @@ class monit::config (
   $logfacility,
   $log_file,
   $include_dir,
-  $include_purge,
-  ) {
+  $include_purge,) {
   include monit::params
 
   include monit
   $monit_conf_file = $monit::params::monit_conf_file
 
-  $alert_ensure = $alert_email ? {
+  $alert_ensure    = $alert_email ? {
     ''      => absent,
     default => present,
   }
-  
+
   monit::alert { 'main':
     ensure => $alert_ensure,
     email  => $alert_email,

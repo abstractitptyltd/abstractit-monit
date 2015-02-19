@@ -30,8 +30,8 @@ define monit::process (
   $host_action    = 'restart',
   $template       = 'monit/process.erb',) {
   include monit
-  $include_dir = $monit::include_dir
-  $service_bin = $monit::service_bin
+  $include_dir  = $monit::include_dir
+  $service_bin  = $monit::service_bin
 
   $real_ensure  = $ensure ? {
     default  => file,

@@ -1,21 +1,20 @@
 # define monit::alert
 
 define monit::alert (
-  $ensure = present,
-  $email = undef,
+  $ensure    = present,
+  $email     = undef,
   $condition = undef,
-  $events = undef,
-  $reminder = undef,
-) {
+  $events    = undef,
+  $reminder  = undef,) {
   include monit
   $include_dir = $monit::include_dir
   $service_bin = $monit::service_bin
-  
+
   $real_ensure = $ensure ? {
-    absent => absent,
+    absent  => absent,
     default => file,
   }
-  
+
   file { "${include_dir}/${name}_alert.monitrc":
     ensure  => $real_ensure,
     owner   => 'root',

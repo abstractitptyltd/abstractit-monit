@@ -3,8 +3,7 @@
 # for managing the monit service
 #
 class monit::install (
-  $version = installed
-) {
+  $version = installed) {
   package { 'monit':
     ensure => $version,
   }

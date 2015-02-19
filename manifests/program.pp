@@ -5,40 +5,38 @@
 # Sample Usage:
 #
 define monit::program (
-  $program = '',
-  $path = '',
-  $start = '',
-  $stop = '',
-  $restarts = '5',
-  $cycles = '5',
+  $program        = '',
+  $path           = '',
+  $start          = '',
+  $stop           = '',
+  $restarts       = '5',
+  $cycles         = '5',
   $restart_action = 'timeout',
-  $status = '',
-  $status_tests = '3',
-  $status_cycles = '3',
-  $status_action = 'restart',
-  $host = '',
-  $port = '',
-  $protocol = '',
-  $type = '',
-  $host_tests = '3',
-  $host_cycles = '3',
-  $host_action = 'restart',
-  $template = 'monit/program.erb',
-) {
-
+  $status         = '',
+  $status_tests   = '3',
+  $status_cycles  = '3',
+  $status_action  = 'restart',
+  $host           = '',
+  $port           = '',
+  $protocol       = '',
+  $type           = '',
+  $host_tests     = '3',
+  $host_cycles    = '3',
+  $host_action    = 'restart',
+  $template       = 'monit/program.erb',) {
   include monit
-  $include_dir = $monit::include_dir
-  $service_bin = $monit::service_bin
+  $include_dir  = $monit::include_dir
+  $service_bin  = $monit::service_bin
 
   $real_program = $program ? {
     ''      => $name,
     default => $program,
   }
-  $real_start = $start ? {
+  $real_start   = $start ? {
     ''      => "${service_bin} ${real_program} start",
     default => $start,
   }
-  $real_stop = $stop ? {
+  $real_stop    = $stop ? {
     ''      => "${service_bin} ${real_program} stop",
     default => $stop,
   }
