@@ -1,10 +1,10 @@
 {
   "name": "abstractit-monit",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Pete Brown",
   "license": "Apache 2.0",
   "summary": "A module for managing monit",
-  "source": "https://github.com/PivitPtyLtd/abstractit-monit",
+  "source": "https://github.com/PivitPtyLtd/puppet-monit",
   "project_page": "https://github.com/PivitPtyLtd/puppet-monit",
   "issues_url": "https://github.com/pivitptyltd/puppet-monit/issues",
   "tags": ["monit", "monitoring"],
@@ -14,11 +14,15 @@
     "operatingsystemrelease": [ "14.04", "12.04" ]
     },
     {
-    "operatingsystem": "Redhat",
+    "operatingsystem": "CentOS",
+    "operatingsystemrelease": [ "5", "6" ]
+    },
+    {
+    "operatingsystem": "RedHat",
     "operatingsystemrelease": [ "5", "6" ]
     }
    ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" }
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.5.1 <5.0.0" }
   ]
 }
