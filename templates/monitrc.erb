@@ -159,7 +159,7 @@ set httpd port <%= @status_port %> and
   check system <%= @fqdn %>
 	<%- if @check_load -%>
 		<%- @load_threshold.keys.sort.each do |load_key| -%>
-     if loadavg (<%= load_key %>) > <%= load_threshold[load_key] %> then alert
+     if loadavg (<%= load_key %>) > <%= @load_threshold[load_key] %> then alert
 		<%- end -%>
 	<%- end -%>
 	<%- if @check_memory -%>
