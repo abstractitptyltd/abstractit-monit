@@ -2,11 +2,11 @@ check host <%= @name %> with address <%= @address %>
 <%- @groups.each do |group| -%>
   group <%= group %>
 <%- end -%>
-  if failed <%= @check %><%- if @count and @timeout -%> count <%= @count %> with timeout <%= @timeout %> seconds <%- end -%> then <%= @action %> 
+  if failed <%= @check_type %><%- if @count and @timeout -%> count <%= @count %> with timeout <%= @timeout %> seconds <%- end -%> then <%= @action %> 
 <%- if @service -%>
   start program = "<%= @real_start %>"
   stop  program = "<%= @real_stop %>"
 <%- end -%>
-<%- if @restarts && @cycles %% @restart_action -%>
+<%- if @restarts && @cycles && @restart_action -%>
   if <%= @restarts %> restarts within <%= @cycles %> cycles then <%= @restart_action %>
 <%- end -%>
