@@ -6,7 +6,7 @@
 define monit::ping (
   $address = $title,
   $groups = [],
-  $check = 'ping',
+  $check_type = 'ping',
   $count = undef,
   $timeout = undef,
   $action = 'alert',
